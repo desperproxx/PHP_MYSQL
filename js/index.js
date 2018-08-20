@@ -1,58 +1,26 @@
+// Get the modal
+var modal = document.getElementById('myModal');
 
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
 
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
 
-/*$( document ).ready(function() {
-	('.change').click(function() {
-		//('body').css('background','green');
-		 alert( 'Привет' );
-	});
-    //window.location.replace("http://stackoverflow.com");
-});*/
-
-$(document).ready(function(){
-	setTimeout(function() { $(".cover").fadeIn()
-		.css({top:1000,opacity:1})
-		.animate({top:100}, 1000, function() {
-    //callback
-}).animate({top:0}, 1500, function() {
-    //callback
-});; 
-	}, 10000);
-
-});
-
-function func() {
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+    modal.style.display = "block";
 
 }
 
-setTimeout(func, 100);
-$('img').each(function() {
-	 var deg = $(this).data('rotate') || 0;
-    var rotate = 'rotate(' + deg + 'deg)';
-    $(this).css({ 
-        '-webkit-transform': rotate,
-        '-moz-transform': rotate,
-        '-o-transform': rotate,
-        '-ms-transform': rotate,
-        'transform': rotate 
-    });
- 
-        $(this).hover(function() {
-             $(this).css('transform', 'rotate(0deg)');
-    }, function() {
-      deg = $(this).data('rotate') || 0;
-      rotate = 'rotate(' + deg + 'deg)';
-    $(this).css({ 
-        '-webkit-transform': rotate,
-        '-moz-transform': rotate,
-        '-o-transform': rotate,
-        '-ms-transform': rotate,
-        'transform': rotate 
-    });
-    $(this).click(function() {
-             $(this).css('width', '500px').css('height','250px');
-    });
-});
-        
-});
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
 
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}

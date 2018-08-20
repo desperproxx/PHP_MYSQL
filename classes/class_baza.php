@@ -1,24 +1,48 @@
 <?php
 class baza{
-	const USERNAME="root";
-	const PASSWORD="";
-	const DBNAME="work_test";
-	const SERVER="localhost";
-	function __construct($name=NULL){
-		if($mysqli=new mysqli(self::SERVER, self::USERNAME,
-			self::PASSWORD, self::DBNAME)){
-			$this->connection=$mysqli;
-}//then
-else{
-	echo "Не удается соединиться с сервером MySQL";
-	exit;
-}//if
-if($name){
-	$this->name=$name;
-}
-}//__construct
-function _destruct(){
-	$this->connection->close();
-}//_destruct
+
+	private $host = "localhost";
+	private $dbname = "work_test";
+	private $user = "root";
+	private $pass = "";
+	private $charset = "utf8";
+	private $pdo;
+    
+    public function mysql_connect() {
+		$dsn = "mysql:host=" . $this->host . ";dbname=" . $this->dbname . ";charset=" . $this->charset;
+		$connopt = array(
+    		PDO::ATTR_ERRMODE  => PDO::ERRMODE_EXCEPTION,
+    		PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+		);
+		$this->pdo = new PDO($dsn, $this->user, $this->pass, $connopt);
+	}
+	public function mysql_get_status() {
+		if(is_null($this->pdo)) {
+			return false; 
+		} elseif ($this->pdo->getAttribute(PDO::ATTR_CONNECTION_STATUS) === $this->host . " via TCP/IP") {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	public function mysql_query($query, $placeholders = null, $select = true) {
+		if($this->mysql_get_status()) {
+			$stmt = $this->pdo->prepare($query);
+			if(!is_null($placeholders)) {
+				$stmt->execute($placeholders);
+			} else {
+				$stmt->execute();
+			}
+			if ($select) {
+				$arr = $stmt->fetchAll();
+				return $arr;
+			}
+		} else {
+			return false; 
+		}
+	}
+	public function mysql_destroy() {
+		$this->pdo = null;
+	}
 }
 ?>
